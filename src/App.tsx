@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { CheckboxGroup } from "./components";
+import { CheckboxGroup, Radio } from "./components";
 
 const CheckboxSection = styled.div`
   margin: 2rem 0;
@@ -28,6 +28,9 @@ function App() {
     "Orange",
   ]);
 
+  // Radio 相关状态
+  const [radioValue, setRadioValue] = useState(1);
+
   // 选项数据
   const plainOptions = [
     { label: "Apple", value: "Apple" },
@@ -42,19 +45,49 @@ function App() {
     setCheckedList(checkedValues);
   };
 
-  return (
-    <CheckboxSection>
-      <SectionTitle>CheckboxGroup 组件演示</SectionTitle>
-      <CheckboxGroup
-        options={plainOptions}
-        value={checkedList}
-        onChange={onChange}
-      />
+  const onRadioChange = (value: any) => {
+    console.log("radio checked", value);
+    setRadioValue(value);
+  };
 
-      <ResultDisplay>
-        <div>选中的值: {JSON.stringify(checkedList)}</div>
-      </ResultDisplay>
-    </CheckboxSection>
+  return (
+    <div>
+      <CheckboxSection>
+        <SectionTitle>CheckboxGroup 组件演示</SectionTitle>
+        <CheckboxGroup
+          options={plainOptions}
+          value={checkedList}
+          onChange={onChange}
+        />
+
+        <ResultDisplay>
+          <div>选中的值: {JSON.stringify(checkedList)}</div>
+        </ResultDisplay>
+      </CheckboxSection>
+
+      <CheckboxSection>
+        <SectionTitle>Radio 组件演示</SectionTitle>
+        <Radio.Group value={radioValue} onChange={onRadioChange}>
+          <Radio value={1}>A</Radio>
+          <Radio value={2}>B</Radio>
+          <Radio value={3}>C</Radio>
+        </Radio.Group>
+
+        <ResultDisplay>
+          <div>选中的值: {radioValue}</div>
+        </ResultDisplay>
+      </CheckboxSection>
+
+      <CheckboxSection>
+        <SectionTitle>Radio 垂直布局演示</SectionTitle>
+        <Radio.Group value={radioValue} onChange={onRadioChange} direction="vertical">
+          <Radio value={1}>选项 A</Radio>
+          <Radio value={2}>选项 B</Radio>
+          <Radio value={3}>选项 C</Radio>
+          <Radio value={4} disabled>禁用选项</Radio>
+        </Radio.Group>
+      </CheckboxSection>
+    </div>
   );
 }
 

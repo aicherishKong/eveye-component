@@ -1,2 +1,5 @@
-export { Checkbox, CheckboxGroup } from './Checkbox'
-export type { CheckboxProps, CheckboxGroupProps } from './Checkbox'
+export { Checkbox, CheckboxGroup } from "./checkbox/Checkbox";
+export type { CheckboxProps, CheckboxGroupProps } from "./checkbox/Checkbox";
+
+export { Radio } from "./radio";
+export type { RadioProps, RadioGroupProps } from "./radio";
