@@ -6,3 +6,6 @@ export type { RadioProps, RadioGroupProps } from "./radio";
 
 export { default as InputNumber } from "./input-number";
 export type { InputNumberProps } from "./input-number";
+
+export { default as Select } from "./select";
+export type { SelectProps, SelectOption } from "./select";

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { createContext, useContext, useState } from 'react';
-import { css } from '@emotion/react';
+import React, { createContext, useContext, useState } from "react";
+import { css } from "@emotion/react";
 
 // Radio Group Context
 interface RadioGroupContextValue {
@@ -34,7 +34,7 @@ export interface RadioGroupProps {
   children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  direction?: 'horizontal' | 'vertical';
+  direction?: "horizontal" | "vertical";
 }
 
 // Radio Styles
@@ -45,11 +45,11 @@ const radioWrapperStyle = css`
   margin-bottom: 6px;
   cursor: pointer;
   transition: opacity 0.15s ease;
-  
+
   &:hover {
     opacity: 0.8;
   }
-  
+
   &.disabled {
     cursor: not-allowed;
     opacity: 0.5;
@@ -70,22 +70,27 @@ const radioIconStyle = (checked: boolean, disabled: boolean) => css`
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid ${checked ? 'rgb(68, 147, 248)' : 'rgba(255, 255, 255, 0.9)'};
-  background: ${checked ? 'rgb(68, 147, 248)' : 'transparent'};
+  border: 2px solid
+    ${checked ? "rgb(68, 147, 248)" : "rgba(255, 255, 255, 0.9)"};
+  background: ${checked ? "rgb(68, 147, 248)" : "transparent"};
   position: relative;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  
+
   &:hover {
-    border-color: ${disabled ? (checked ? 'rgb(68, 147, 248)' : 'rgba(255, 255, 255, 0.9)') : 'rgb(68, 147, 248)'};
-    ${!checked && !disabled ? 'background-color: rgba(68, 147, 248, 0.1);' : ''}
+    border-color: ${disabled
+      ? checked
+        ? "rgb(68, 147, 248)"
+        : "rgba(255, 255, 255, 0.9)"
+      : "rgb(68, 147, 248)"};
+    ${!checked && !disabled ? "background-color: rgba(68, 147, 248, 0.1);" : ""}
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -103,15 +108,17 @@ const radioLabelStyle = css`
   user-select: none;
 `;
 
-const radioGroupWrapperStyle = (direction: 'horizontal' | 'vertical') => css`
+const radioGroupWrapperStyle = (direction: "horizontal" | "vertical") => css`
   display: flex;
-  flex-direction: ${direction === 'vertical' ? 'column' : 'row'};
-  gap: ${direction === 'vertical' ? '8px' : '4px 8px'};
-  align-items: ${direction === 'vertical' ? 'flex-start' : 'center'};
+  flex-direction: ${direction === "vertical" ? "column" : "row"};
+  gap: ${direction === "vertical" ? "8px" : "4px 8px"};
+  align-items: ${direction === "vertical" ? "flex-start" : "center"};
 `;
 
 // Radio Component
-export const Radio: React.FC<RadioProps> & { Group: React.FC<RadioGroupProps> } = ({
+export const Radio: React.FC<RadioProps> & {
+  Group: React.FC<RadioGroupProps>;
+} = ({
   value,
   checked: checkedProp,
   defaultChecked,
@@ -122,22 +129,24 @@ export const Radio: React.FC<RadioProps> & { Group: React.FC<RadioGroupProps> } 
   style,
 }) => {
   const groupContext = useContext(RadioGroupContext);
-  const [internalChecked, setInternalChecked] = useState(defaultChecked || false);
-  
+  const [internalChecked, setInternalChecked] = useState(
+    defaultChecked || false
+  );
+
   // Determine if controlled by group or individual props
   const isControlledByGroup = groupContext && value !== undefined;
-  const checked = isControlledByGroup 
-    ? groupContext.value === value 
-    : checkedProp !== undefined 
-      ? checkedProp 
-      : internalChecked;
-  
+  const checked = isControlledByGroup
+    ? groupContext.value === value
+    : checkedProp !== undefined
+    ? checkedProp
+    : internalChecked;
+
   const disabled = disabledProp || groupContext?.disabled || false;
   const name = groupContext?.name;
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
-    
+
     if (isControlledByGroup) {
       groupContext?.onChange?.(value);
     } else {
@@ -147,11 +156,11 @@ export const Radio: React.FC<RadioProps> & { Group: React.FC<RadioGroupProps> } 
       onChange?.(e);
     }
   };
-  
+
   return (
-    <label 
-      css={radioWrapperStyle} 
-      className={`${className || ''} ${disabled ? 'disabled' : ''}`}
+    <label
+      css={radioWrapperStyle}
+      className={`${className || ""} ${disabled ? "disabled" : ""}`}
       style={style}
     >
       <input
@@ -179,30 +188,30 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   children,
   className,
   style,
-  direction = 'horizontal',
+  direction = "horizontal",
 }) => {
   const [internalValue, setInternalValue] = useState(defaultValue);
-  
+
   const value = valueProp !== undefined ? valueProp : internalValue;
-  
+
   const handleChange = (newValue: any) => {
     if (valueProp === undefined) {
       setInternalValue(newValue);
     }
     onChange?.(newValue);
   };
-  
+
   const contextValue: RadioGroupContextValue = {
     value,
     onChange: handleChange,
     disabled,
     name,
   };
-  
+
   return (
     <RadioGroupContext.Provider value={contextValue}>
-      <div 
-        css={radioGroupWrapperStyle(direction)} 
+      <div
+        css={radioGroupWrapperStyle(direction)}
         className={className}
         style={style}
       >
