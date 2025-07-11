@@ -12,12 +12,17 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "antd": "^5.26.4",
+    "classnames": "^2.5.1",
+    "lodash": "^4.17.21",
+    "rc-select": "^14.16.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",
     "@eslint/js": "^9.29.0",
+    "@types/lodash": "^4.17.20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
