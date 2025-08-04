@@ -1,0 +1,256 @@
+/* CSS变量定义 */
+:root {
+  --drp-bg-color: #fff;
+  --drp-border-color: #d9d9d9;
+  --drp-text-color: rgba(0, 0, 0, 0.88);
+  --drp-text-secondary: rgba(0, 0, 0, 0.45);
+  --drp-text-disabled: rgba(0, 0, 0, 0.25);
+  --drp-hover-bg: #e6f4ff;
+  --drp-primary-color: #4096ff;
+  --drp-disabled-bg: #f5f5f5;
+  --drp-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --drp-border-separator: #f0f0f0;
+  --drp-success-bg: #f6ffed;
+  --drp-success-border: #b7eb8f;
+}
+
+/* 暗黑模式变量 */
+[data-theme="dark"] {
+  --drp-bg-color: #141414;
+  --drp-border-color: #434343;
+  --drp-text-color: rgba(255, 255, 255, 0.88);
+  --drp-text-secondary: rgba(255, 255, 255, 0.45);
+  --drp-text-disabled: rgba(255, 255, 255, 0.25);
+  --drp-hover-bg: #1f1f1f;
+  --drp-primary-color: #1677ff;
+  --drp-disabled-bg: #262626;
+  --drp-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 3px 6px -4px rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+  --drp-border-separator: #303030;
+  --drp-success-bg: #162312;
+  --drp-success-border: #274916;
+}
+
+.date-range-picker {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 300px;
+}
+
+.picker-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--drp-border-color);
+  border-radius: 6px;
+  padding: 4px 11px;
+  background: var(--drp-bg-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.picker-input:hover {
+  border-color: var(--drp-primary-color);
+}
+
+.picker-input.open {
+  border-color: var(--drp-primary-color);
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2);
+}
+
+.picker-input.disabled {
+  background: var(--drp-disabled-bg);
+  cursor: not-allowed;
+  color: var(--drp-text-disabled);
+}
+
+.picker-input input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+  color: var(--drp-text-color);
+}
+
+.picker-input input::placeholder {
+  color: var(--drp-text-disabled);
+}
+
+.picker-input input:disabled {
+  cursor: not-allowed;
+  color: var(--drp-text-disabled);
+}
+
+.separator {
+  margin: 0 8px;
+  color: var(--drp-text-disabled);
+}
+
+.calendar-icon {
+  color: var(--drp-text-disabled);
+  font-size: 14px;
+}
+
+.picker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1050;
+  background: var(--drp-bg-color);
+  border: 1px solid var(--drp-border-color);
+  border-radius: 8px;
+  box-shadow: var(--drp-shadow);
+  margin-top: 4px;
+  padding: 8px;
+  min-width: 520px;
+}
+
+.calendars {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar {
+  flex: 1;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--drp-border-separator);
+  margin-bottom: 8px;
+}
+
+.month-year {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--drp-text-color);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.weekday {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 12px;
+  color: var(--drp-text-secondary);
+  font-weight: 500;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  color: var(--drp-text-color);
+  position: relative;
+}
+
+.date:hover {
+  background: var(--drp-hover-bg);
+}
+
+.date.other-month {
+  color: var(--drp-text-disabled);
+}
+
+.date.today {
+  border: 1px solid var(--drp-primary-color);
+}
+
+.date.selected {
+  background: var(--drp-primary-color);
+  color: #fff;
+}
+
+.date.range-start {
+  background: var(--drp-primary-color);
+  color: #fff;
+  border-radius: 4px 0 0 4px;
+}
+
+.date.range-end {
+  background: var(--drp-primary-color);
+  color: #fff;
+  border-radius: 0 4px 4px 0;
+}
+
+.date.range-start.range-end {
+  border-radius: 4px;
+}
+
+.date.in-range {
+  background: var(--drp-hover-bg);
+  color: var(--drp-primary-color);
+}
+
+.date.hover-range {
+  background: var(--drp-hover-bg);
+  color: var(--drp-primary-color);
+}
+
+.date.in-range:not(.range-start):not(.range-end) {
+  border-radius: 0;
+}
+
+.date.hover-range:not(.range-start):not(.range-end) {
+  border-radius: 0;
+}
+
+.picker-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--drp-border-separator);
+  margin-top: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .picker-dropdown {
+    min-width: 300px;
+  }
+  
+  .calendars {
+    flex-direction: column;
+  }
+  
+  .calendar {
+    width: 100%;
+  }
+}
+
+/* 动画效果 */
+.picker-dropdown {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
