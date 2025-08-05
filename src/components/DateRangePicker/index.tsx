@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Button } from 'antd';
+import { LeftOutlined, RightOutlined, DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons';
 import './index.css';
 
 interface DateRangePickerProps {
@@ -131,23 +132,45 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       <div className="calendar">
         <div className="calendar-header">
           {!isSecond && (
-            <Button 
-              type="text" 
-              size="small" 
-              onClick={() => handleMonthChange('prev')}
-            >
-              ‹‹
-            </Button>
+            <>
+              <Button 
+                type="text" 
+                size="small" 
+                icon={<DoubleLeftOutlined />}
+                onClick={() => {
+                  const newMonth = new Date(currentMonth);
+                  newMonth.setFullYear(newMonth.getFullYear() - 1);
+                  setCurrentMonth(newMonth);
+                }}
+              />
+              <Button 
+                type="text" 
+                size="small" 
+                icon={<LeftOutlined />}
+                onClick={() => handleMonthChange('prev')}
+              />
+            </>
           )}
           <span className="month-year">{monthYear}</span>
           {isSecond && (
-            <Button 
-              type="text" 
-              size="small" 
-              onClick={() => handleMonthChange('next')}
-            >
-              ››
-            </Button>
+            <>
+              <Button 
+                type="text" 
+                size="small" 
+                icon={<RightOutlined />}
+                onClick={() => handleMonthChange('next')}
+              />
+              <Button 
+                type="text" 
+                size="small" 
+                icon={<DoubleRightOutlined />}
+                onClick={() => {
+                  const newMonth = new Date(currentMonth);
+                  newMonth.setFullYear(newMonth.getFullYear() + 1);
+                  setCurrentMonth(newMonth);
+                }}
+              />
+            </>
           )}
         </div>
         

@@ -107,10 +107,17 @@
   margin-bottom: 8px;
 }
 
+.calendar-header > div {
+  display: flex;
+  gap: 4px;
+}
+
 .month-year {
   font-weight: 500;
   font-size: 14px;
   color: var(--drp-text-color);
+  flex: 1;
+  text-align: center;
 }
 
 .weekdays {
