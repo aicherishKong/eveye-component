@@ -4,7 +4,7 @@ import './index.css';
 
 interface DateRangePickerProps {
   value?: [Date | null, Date | null];
-  onChange?: (dates: [Date | null, Date | null]) => void;
+  onChange?: (dates: [Date | null, Date | null], isoStrings: [string | null, string | null]) => void;
   placeholder?: [string, string];
   format?: string;
   disabled?: boolean;
@@ -97,7 +97,9 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       const newDates: [Date, Date] = start! <= date ? [start!, date] : [date, start!];
       setSelectedDates(newDates);
       setSelectingStart(true);
-      onChange?.(newDates);
+      // 转换为ISO字符串格式
+      const isoStrings: [string, string] = [newDates[0].toISOString(), newDates[1].toISOString()];
+      onChange?.(newDates, isoStrings);
       setIsOpen(false);
     }
   };
@@ -232,7 +234,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               size="small" 
               onClick={() => {
                 setSelectedDates([null, null]);
-                onChange?.([null, null]);
+                onChange?.([null, null], [null, null]);
               }}
             >
               清除
@@ -241,7 +243,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               type="primary" 
               size="small"
               onClick={() => {
-                onChange?.(selectedDates);
+                const isoStrings: [string | null, string | null] = [
+                  selectedDates[0]?.toISOString() || null,
+                  selectedDates[1]?.toISOString() || null
+                ];
+                onChange?.(selectedDates, isoStrings);
                 setIsOpen(false);
               }}
             >

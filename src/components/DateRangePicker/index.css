@@ -1,21 +1,5 @@
-/* CSS变量定义 */
+/* CSS变量定义 - 暗黑主题 */
 :root {
-  --drp-bg-color: #fff;
-  --drp-border-color: #d9d9d9;
-  --drp-text-color: rgba(0, 0, 0, 0.88);
-  --drp-text-secondary: rgba(0, 0, 0, 0.45);
-  --drp-text-disabled: rgba(0, 0, 0, 0.25);
-  --drp-hover-bg: #e6f4ff;
-  --drp-primary-color: #4096ff;
-  --drp-disabled-bg: #f5f5f5;
-  --drp-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  --drp-border-separator: #f0f0f0;
-  --drp-success-bg: #f6ffed;
-  --drp-success-border: #b7eb8f;
-}
-
-/* 暗黑模式变量 */
-[data-theme="dark"] {
   --drp-bg-color: #141414;
   --drp-border-color: #434343;
   --drp-text-color: rgba(255, 255, 255, 0.88);
