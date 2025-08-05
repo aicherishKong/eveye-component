@@ -21,11 +21,18 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDates, setSelectedDates] = useState<[Date | null, Date | null]>(value || [null, null]);
+
+  // 同步外部 value 变化
+  useEffect(() => {
+    if (value) {
+      setSelectedDates(value);
+    }
+  }, [value]);
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
   const [selectingStart, setSelectingStart] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 点击外部关闭弹窗
+  // 点击外部关闭弹窗和键盘事件处理
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -33,18 +40,31 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
+  // 验证日期是否有效
+  const isValidDate = (date: any): date is Date => {
+    return date instanceof Date && !isNaN(date.getTime());
+  };
+
   // 格式化日期
   const formatDate = (date: Date | null): string => {
-    if (!date) return '';
+    if (!date || !isValidDate(date)) return '';
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -87,26 +107,35 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
   };
 
   // 处理日期点击
-  const handleDateClick = (date: Date) => {
-    if (disabled) return;
+  const handleDateClick = useCallback((date: Date) => {
+    if (disabled || !isValidDate(date)) return;
     
     if (selectingStart || !selectedDates[0]) {
       setSelectedDates([date, null]);
       setSelectingStart(false);
+      setHoverDate(null);
     } else {
       const [start] = selectedDates;
-      const newDates: [Date, Date] = start! <= date ? [start!, date] : [date, start!];
+      if (!start || !isValidDate(start)) {
+        setSelectedDates([date, null]);
+        setSelectingStart(false);
+        return;
+      }
+      
+      const newDates: [Date, Date] = start <= date ? [start, date] : [date, start];
       setSelectedDates(newDates);
       setSelectingStart(true);
+      setHoverDate(null);
+      
       // 转换为ISO字符串格式
       const isoStrings: [string, string] = [newDates[0].toISOString(), newDates[1].toISOString()];
       onChange?.(newDates, isoStrings);
       setIsOpen(false);
     }
-  };
+  }, [disabled, selectingStart, selectedDates, onChange]);
 
   // 处理月份切换
-  const handleMonthChange = (direction: 'prev' | 'next') => {
+  const handleMonthChange = useCallback((direction: 'prev' | 'next') => {
     const newMonth = new Date(currentMonth);
     if (direction === 'prev') {
       newMonth.setMonth(newMonth.getMonth() - 1);
@@ -114,7 +143,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       newMonth.setMonth(newMonth.getMonth() + 1);
     }
     setCurrentMonth(newMonth);
-  };
+  }, [currentMonth]);
 
   // 获取下个月
   const getNextMonth = () => {
@@ -142,12 +171,16 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   newMonth.setFullYear(newMonth.getFullYear() - 1);
                   setCurrentMonth(newMonth);
                 }}
+                aria-label="上一年"
+                title="上一年"
               />
               <Button 
                 type="text" 
                 size="small" 
                 icon={<LeftOutlined />}
                 onClick={() => handleMonthChange('prev')}
+                aria-label="上一月"
+                title="上一月"
               />
             </>
           )}
@@ -159,6 +192,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 size="small" 
                 icon={<RightOutlined />}
                 onClick={() => handleMonthChange('next')}
+                aria-label="下一月"
+                title="下一月"
               />
               <Button 
                 type="text" 
@@ -169,6 +204,8 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   newMonth.setFullYear(newMonth.getFullYear() + 1);
                   setCurrentMonth(newMonth);
                 }}
+                aria-label="下一年"
+                title="下一年"
               />
             </>
           )}
@@ -211,6 +248,16 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 onClick={() => handleDateClick(date)}
                 onMouseEnter={() => setHoverDate(date)}
                 onMouseLeave={() => setHoverDate(null)}
+                role="button"
+                tabIndex={isCurrentMonth ? 0 : -1}
+                aria-label={`${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日${isToday ? ' 今天' : ''}${isSelected ? ' 已选择' : ''}${inRange ? ' 在范围内' : ''}`}
+                aria-selected={isSelected}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleDateClick(date);
+                  }
+                }}
               >
                 {date.getDate()}
               </div>
@@ -226,6 +273,17 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
       <div 
         className={`picker-input ${isOpen ? 'open' : ''} ${disabled ? 'disabled' : ''}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label="选择日期范围"
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        onKeyDown={(e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
       >
         <input 
           type="text" 
@@ -233,21 +291,30 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           placeholder={placeholder[0]}
           readOnly
           disabled={disabled}
+          aria-label={placeholder[0]}
+          tabIndex={-1}
         />
-        <span className="separator">-</span>
+        <span className="separator" aria-hidden="true">-</span>
         <input 
           type="text" 
           value={formatDate(selectedDates[1])}
           placeholder={placeholder[1]}
           readOnly
           disabled={disabled}
+          aria-label={placeholder[1]}
+          tabIndex={-1}
         />
-        <span className="calendar-icon">📅</span>
+        <span className="calendar-icon" aria-hidden="true">📅</span>
       </div>
       
       {isOpen && (
-        <div className="picker-dropdown">
-          <div className="calendars">
+        <div 
+          className="picker-dropdown"
+          role="dialog"
+          aria-label="日期范围选择器"
+          aria-modal="true"
+        >
+          <div className="calendars" role="application" aria-label="日历">
             {renderCalendar(currentMonth)}
             {renderCalendar(getNextMonth(), true)}
           </div>
@@ -257,22 +324,29 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
               size="small" 
               onClick={() => {
                 setSelectedDates([null, null]);
+                setSelectingStart(true);
+                setHoverDate(null);
                 onChange?.([null, null], [null, null]);
               }}
+              aria-label="清除选择的日期"
             >
               清除
             </Button>
             <Button 
               type="primary" 
               size="small"
+              disabled={!selectedDates[0] || !selectedDates[1]}
               onClick={() => {
-                const isoStrings: [string | null, string | null] = [
-                  selectedDates[0]?.toISOString() || null,
-                  selectedDates[1]?.toISOString() || null
-                ];
-                onChange?.(selectedDates, isoStrings);
+                if (selectedDates[0] && selectedDates[1] && isValidDate(selectedDates[0]) && isValidDate(selectedDates[1])) {
+                  const isoStrings: [string, string] = [
+                    selectedDates[0].toISOString(),
+                    selectedDates[1].toISOString()
+                  ];
+                  onChange?.(selectedDates as [Date, Date], isoStrings);
+                }
                 setIsOpen(false);
               }}
+              aria-label="确认选择的日期范围"
             >
               确定
             </Button>

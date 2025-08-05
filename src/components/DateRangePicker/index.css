@@ -8,7 +8,8 @@
   --drp-hover-bg: #1f1f1f;
   --drp-primary-color: #1677ff;
   --drp-disabled-bg: #262626;
-  --drp-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 3px 6px -4px rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+  --drp-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.32),
+    0 3px 6px -4px rgba(0, 0, 0, 0.32), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
   --drp-border-separator: #303030;
   --drp-success-bg: #162312;
   --drp-success-border: #274916;
@@ -32,7 +33,7 @@
   transition: all 0.2s;
 }
 
-.picker-input:hover {
+.picker-input:hover:not(.disabled) {
   border-color: var(--drp-primary-color);
 }
 
@@ -45,6 +46,12 @@
   background: var(--drp-disabled-bg);
   cursor: not-allowed;
   color: var(--drp-text-disabled);
+}
+
+.picker-input:focus {
+  outline: none;
+  border-color: var(--drp-primary-color);
+  box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.2);
 }
 
 .picker-input input {
@@ -159,6 +166,12 @@
   background: var(--drp-hover-bg);
 }
 
+.date:focus {
+  outline: 2px solid var(--drp-primary-color);
+  outline-offset: -2px;
+  background: var(--drp-hover-bg);
+}
+
 .date.other-month {
   color: var(--drp-text-disabled);
 }
@@ -220,11 +233,11 @@
   .picker-dropdown {
     min-width: 300px;
   }
-  
+
   .calendars {
     flex-direction: column;
   }
-  
+
   .calendar {
     width: 100%;
   }
