@@ -9,3 +9,6 @@ export type { InputNumberProps } from "./input-number";
 
 export { default as Select } from "./select";
 export type { SelectProps, SelectOption } from "./select";
+
+export { default as Tabs } from "./tabs";
+export type { TabsProps, TabItem } from "./tabs";
