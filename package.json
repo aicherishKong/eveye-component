@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.14.1",
     "antd": "^5.26.4",
     "classnames": "^2.5.1",
+    "echarts": "^6.0.0",
     "lodash": "^4.17.21",
     "rc-select": "^14.16.8",
     "react": "^19.1.0",

@@ -1,0 +1,97 @@
+.chart-selector {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #404040;
+}
+
+.chart-option {
+  margin-bottom: 12px;
+}
+
+.chart-option:last-child {
+  margin-bottom: 0;
+}
+
+.chart-option-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 12px 16px;
+  background-color: #1a1a1a;
+  border-radius: 6px;
+  border: 1px solid #404040;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.chart-option-label:hover {
+  background-color: #333333;
+  border-color: #555555;
+}
+
+.chart-checkbox {
+  display: none;
+}
+
+.chart-label-text {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.chart-experiments {
+  color: #888888;
+  font-size: 14px;
+  margin-right: 12px;
+}
+
+.check-icon {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* 分组样式 */
+.chart-selector .chart-option:nth-child(1),
+.chart-selector .chart-option:nth-child(2),
+.chart-selector .chart-option:nth-child(3) {
+  margin-bottom: 8px;
+}
+
+.chart-selector .chart-option:nth-child(3) {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.chart-selector .chart-option:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #404040 20%, #404040 80%, transparent);
+}
+
+.chart-selector .chart-option:nth-child(4) {
+  position: relative;
+}
+
+.chart-selector .chart-option:nth-child(4)::before {
+  content: 'COST';
+  position: absolute;
+  top: -20px;
+  left: 16px;
+  color: #666666;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}

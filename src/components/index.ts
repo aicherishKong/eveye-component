@@ -12,3 +12,8 @@ export type { SelectProps, SelectOption } from "./select";
 
 export { default as Tabs } from "./tabs";
 export type { TabsProps, TabItem } from "./tabs";
+
+export { default as LatencyChart } from './latency-chart';
+export { default as ChartSelector } from './chart-selector';
+export type { ChartOption, ChartSelectorProps } from './chart-selector';
+export type { LatencyChartProps } from "./latency-chart";
